@@ -1,3 +1,14 @@
+
+Name of feature: lab07
+
+Estimate of time needed to complete: 1 day
+
+Start time: 3pm
+
+Finish time: 5pm
+
+Actual time needed to complete: 15 yours
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

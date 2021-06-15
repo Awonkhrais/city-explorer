@@ -8,6 +8,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Weather from './components/Weather';
+import Movies from './components/Movies';
 
 
 
@@ -22,7 +23,8 @@ class App extends React.Component {
       displayErrMsg: false,
       displayMap: false,
       mapLink: '',
-      weatherData: []
+      weatherData: [],
+      movieData:[],
 
 
 
@@ -46,12 +48,19 @@ class App extends React.Component {
       const weatherArray = await axios.get(weatherUrl);
       console.log(weatherArray)
 
+      let serverRouteMov = process.env.REACT_APP_SERVER;
+      let movieUrl=`${serverRouteMov}movies?cityname=${findLocation}`
+      const movieArray= await axios.get(movieUrl);
+      console.log(movieArray)
+
+
       this.setState(
         {
           locData: locResult.data[0],
           displayMap: true,
           mapLink: `https://maps.locationiq.com/v3/staticmap?key=pk.107d35e31b396d7967b4a082300e1644&center=${locationArray[0].lat},${locationArray[0].lon}&zoom=14`,
-          weatherData: weatherArray.data[0]
+          weatherData: weatherArray.data[0],
+          movieData:movieArray.data[0]
         }
       )
 
@@ -111,6 +120,8 @@ class App extends React.Component {
         <Weather
           weather={this.state.weatherData}
         />
+
+        <Movies moives={this.state.movieData} />
 
 
 

@@ -1,12 +1,14 @@
 import React from 'react';
 import axios from 'axios';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
 import City from './components/City';
 import Error from './components/Error';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Weather from './components/Weather';
+
 
 
 
@@ -20,6 +22,7 @@ class App extends React.Component {
       displayErrMsg: false,
       displayMap: false,
       mapLink: '',
+      weatherData: []
 
 
 
@@ -36,18 +39,30 @@ class App extends React.Component {
       let locResult = await axios.get(locUrl);
       let locationArray = locResult.data;
       console.log(locResult.data[0]);
+      console.log(locationArray)
+
+      let serverRoute = process.env.REACT_APP_SERVER;
+      let weatherUrl = `${serverRoute}weather?cityname=${findLocation}`
+      const weatherArray = await axios.get(weatherUrl);
+      console.log(weatherArray)
+
       this.setState(
         {
           locData: locResult.data[0],
           displayMap: true,
-          mapLink: `https://maps.locationiq.com/v3/staticmap?key=pk.107d35e31b396d7967b4a082300e1644&center=${locationArray[0].lat},${locationArray[0].lon}&zoom=14`
+          mapLink: `https://maps.locationiq.com/v3/staticmap?key=pk.107d35e31b396d7967b4a082300e1644&center=${locationArray[0].lat},${locationArray[0].lon}&zoom=14`,
+          weatherData: weatherArray.data[0]
         }
       )
+
+
+
     }
     catch {
       this.setState({
         errMsg: `Error 404 : Unable to geocode`,
         displayErrMsg: true,
+
         // displayMap: true,
 
 
@@ -92,7 +107,11 @@ class App extends React.Component {
           mapLink={this.state.mapLink}
 
         />
-        
+
+        <Weather
+          weather={this.state.weatherData}
+        />
+
 
 
         {/* <p>{this.state.locData.display_name}</p>
